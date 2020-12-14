@@ -4,13 +4,13 @@ function solve(desiredSum, input) {
   let maxI = nums.findIndex(n => n>desiredSum/2);
   let numbers; 
   for(let i=0; i<maxI; i++) { 
-    let j=y.length; 
+    let j=nums.length; 
     let sum; 
     do { 
-      sum = y[i] + y[--j] 
+      sum = nums[i] + nums[--j] 
     } while (sum > desiredSum); 
     if (sum == desiredSum) {
-      numbers = [y[i],y[j]]; 
+      numbers = [nums[i],nums[j]]; 
       break;
     } 
   }
