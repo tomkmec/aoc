@@ -2,14 +2,22 @@ function parse(input) {
     return input.split('\n').map(r => r.split(''));
 }
 
-function neighbourCounts(arr) {
+function neighbourCounts(arr, raytrace) {
     let result = Array(arr.length).fill(0).map(() => Array(arr[0].length).fill(0));
     for (let r=0; r<arr.length; r++) {
         for (let c=0; c<arr[r].length; c++) {
-            if (arr[r][c]=='#') {
+            if (arr[r][c]!='.') {
                 for (let x=-1; x<2; x++) for (let y=-1; y<2; y++) {
-                    if (!(x==0 && y==0) && x+c >= 0 && x+c < arr[0].length && y+r >= 0 && y+r < arr.length) {
-                        result[y+r][x+c]++
+                    if (!(x==0 && y==0)) {
+                        let xx=c, yy=r;
+                        let inside;
+                        do { 
+                            xx += x; yy += y; 
+                            inside = (xx >= 0 && xx < arr[0].length && yy >= 0 && yy < arr.length);
+                        } while (inside && raytrace && arr[yy][xx] == '.')
+                        if (inside && arr[yy][xx] == '#') {
+                            result[r][c]++;
+                        }
                     }
                 }
             }
@@ -18,12 +26,12 @@ function neighbourCounts(arr) {
     return result;
 }
 
-function progress(arr) {
-    let counts = neighbourCounts(arr);
+function progress(arr, raytrace, minSeatsToVacate) {
+    let counts = neighbourCounts(arr, raytrace);
     return arr.map((row, y) => row.map((seat, x) => {
         if (seat == 'L' && counts[y][x] == 0) {
             return '#';
-        } else if (seat == '#' && counts[y][x] >= 4) {
+        } else if (seat == '#' && counts[y][x] >= minSeatsToVacate) {
             return 'L';
         } else {
             return seat;
@@ -42,13 +50,13 @@ function isEqual(arr1, arr2) {
     return true;
 }
 
-function solvePart1(input) {
-    const MAX = 10000;
+function solve(input, raytrace, minSeatsToVacate) {
+    const MAX = 3000;
     let next = parse(input), now;
     let step = 0;
     do {
         now=next;
-        next = progress(now);
+        next = progress(now, raytrace, minSeatsToVacate);
         step++;
     } while (!isEqual(now, next) && step < MAX)
 
@@ -59,6 +67,9 @@ function solvePart1(input) {
     }
 }
 
+function solvePart1(input) {
+    return solve(input, false, 4)
+}
 function solvePart2(input) {
-
+    return solve(input, true, 5)
 }
