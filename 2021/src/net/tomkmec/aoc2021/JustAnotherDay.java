@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-public abstract class JustAnotherrDay {
+public abstract class JustAnotherDay {
     public Stream<String> data() throws IOException, URISyntaxException {
         String fileName = this.getClass().getSimpleName().substring(3) + ".txt";
         URI uri = this.getClass().getClassLoader().getResource(fileName).toURI();

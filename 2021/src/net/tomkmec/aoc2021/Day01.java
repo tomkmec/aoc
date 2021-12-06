@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day01 extends JustAnotherrDay {
+public class Day01 extends JustAnotherDay {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Stream<String> data = new Day01().data();
         List<Long> numbers = data.map(Long::parseLong).collect(Collectors.toList());
